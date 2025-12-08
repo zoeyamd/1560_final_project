@@ -18,6 +18,10 @@ ridership_data <- ridership_data %>%
          Day = day(date_only)) %>%
   select(-c(datetime_obj, date_only))
 
+otp_data$Date <- as.Date(otp_data$Date)
+otp_data <- otp_data %>%
+  mutate(Day = day(Date))
+
 #identifying incident
 otp_data <- otp_data %>%
   mutate(Delay.Min = Delay.Sec/60,
@@ -25,26 +29,11 @@ otp_data <- otp_data %>%
                               Delay.Min > 5 ~ "Late",
                               TRUE ~ "On-Time"))
 
-#identifying stop trip frequenecy 
-frequency_thresholds <- trip_frequency %>%
-  pull(Trips_Served) %>%
-  # Calculate the 33rd and 66th percentiles, ignoring any NA values
-  quantile(c(0.33, 0.66), na.rm = TRUE)
+#matching stops
+.stops <- read.csv("/Users/zoeybug/Documents/GitHub/1650_final_project/data/stop.csv")
+.stops <- .stops %>%
+  rename(Stop.Number = TimePointId, Stop = TimePointShortName)
 
-p33_threshold <- round(frequency_thresholds["33%"]) # 33rd percentile cutoff
-p66_threshold <- round(frequency_thresholds["66%"]) # 66th percentile cutoff
-
-#create frequency columns
-stop_frequency_categorized <- trip_frequency %>%
-  mutate(
-    Frequency_Category = case_when(
-      # Category 1: High Frequency (Trips_Served is greater than or equal to the 66th percentile)
-      Trips_Served >= p66_threshold ~ "High Frequency (Peak Core)",
-      
-      # Category 2: Medium Frequency (Trips_Served is greater than or equal to the 33rd percentile, but less than p66)
-      Trips_Served >= p33_threshold ~ "Medium Frequency (Base Core)",
-      
-      # Category 3: Low Frequency (Everything else, which is below the 33rd percentile)
-      TRUE ~ "Low Frequency (Tail/Coverage)"
-    )
-  )
+otp_data <- otp_data %>%
+  left_join(.stops, by = "Stop") %>%
+  select(-c("Stop"))
