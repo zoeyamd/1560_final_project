@@ -9,7 +9,6 @@ frequency_plot <- ggplot(otp_ridership_joined,
        aes(x = Frequency_Category, y = avg_riders_per_day)) +
   geom_boxplot(fill = "lightblue", color = "darkblue", alpha = 0.7) +
   labs(title = "Average Ridership by Stop Service Frequency",
-       subtitle = "Analysis confirms significant differences across all service levels.",
        x = "Service Frequency Category",
        y = "Average Riders per Day") +
   theme_minimal() +
@@ -25,7 +24,6 @@ incident_plot <- ggplot(otp_ridership_joined, aes(x = Late +1, y = Early +1)) +
     scale_x_continuous(trans = 'log10', labels = scales::comma) +
     scale_y_continuous(trans = 'log10', labels = scales::comma) +
   labs(title = "Relationship Between Late and Early Incidents per Stop",
-       subtitle = "High positive correlation suggests unstable scheduling (route volatility).",
        x = "Total Late Incident Count",
        y = "Total Early Incident Count") +
   theme_minimal()
