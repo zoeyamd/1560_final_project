@@ -13,7 +13,7 @@
 #' @param ridership column name for your ridership variable 
 #' @param frequency column name for your trip frequency variable 
 #' 
-#' @return list of anova result and post hoc result summaries
+#' @return list of anova result and post hoc results
 
 anova_test <- function(joined, ridership, frequency){
   #set variable names as strings
