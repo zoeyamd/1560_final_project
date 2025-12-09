@@ -2,7 +2,7 @@
 library(ggplot2)
 
 #source work from run file
-source("/Users/zoeybug/Documents/GitHub/wk12_github/scripts/run_analysis.R")
+source("run.R")
 
 #average ridership by stop frequency
 frequency_plot <- ggplot(otp_ridership_joined, 
