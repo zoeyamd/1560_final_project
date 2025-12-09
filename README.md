@@ -1,7 +1,7 @@
 # 1560 Final Project - Analysis of RIPTA Ridership and On-Time Performance
 **Zoey Dangleman**
 
-This repository is focused on analyzing RIPTA ridership and on-time performance data. The primary research question of this project is: How do certain ridership variables (trip frequency, average ridership) correlate to each other and the on-time performance of the RIPTA? The motivation behind this question is to define key characteristics and patterns of route-stops in order to inform service planning strategies and investment. 
+This repository is focused on analyzing RIPTA ridership and on-time performance data. The primary research question of this project is: How do certain ridership variables (trip frequency, average ridership) correlate to each other and the on-time performance of the RIPTA? The motivation behind this question is to define key characteristics and patterns of route-stop behaviors in order to inform service planning strategies and investment. 
 
 The files of this repository are organized as follows:<br>
   * _scripts_: folder containing files with functions<br>
