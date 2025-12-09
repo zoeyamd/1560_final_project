@@ -72,7 +72,7 @@ summarize_ridership <- function(ridership_data, threshold) {
 
 #' Incident Occurences
 #' 
-#' @description This function summarizes how many times eacg incident occurs for
+#' @description This function summarizes how many times each incident occurs for
 #' each route-stop combination. 
 #' 
 #' @param otp_data data frame. your cleaned otp data
