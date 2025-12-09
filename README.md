@@ -12,5 +12,6 @@ What this repository will return is:<br>
   * _anova test results_: summary of statistical relationship between service frequency and ridership<br>
   * _lm model results_: summary of the linear impact of increasing service frequency on incident occurences<br>
   * _ridership frequency plot_: boxplots that illustrate the distribution of ridership changes across frequency categories (visual representation of anova tests)<br>
-  * _incident plot_: log-transformed scatterplot that shows relationship between late and early incidents
+  * _incident plot_: log-transformed scatterplot that shows relationship between late and early incidents<br>
+  <br>
 These can again be used to inform service planning and to assess the effectiveness of current strategies. 
