@@ -53,7 +53,7 @@ clean_and_process <- function(ridership_path, otp_path, stop_path){
   
   #change otp stop names to match ridership stop names
   otp_data <- otp_data %>%
-    left_join(stops, by = c("Route","Stop")) %>%
+    left_join(stop, by = c("Route","Stop")) %>%
     select(-c("Stop"))
   
   return(list(ridership = ridership_data, otp = otp_data))

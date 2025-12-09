@@ -1,8 +1,8 @@
-#************************************* DATA SUMMARY **********************************#
-#                                                                                     #
-#                                                                                     #
-# This code organizes and summarizes your data.                                       #
-#*************************************************************************************#
+#******************************** DATA SUMMARY *******************************#
+#                                                                             #
+#                                                                             #
+# This code organizes and summarizes your data.                               #
+#*****************************************************************************#
 
 #' Calculate average ridership
 #' 
@@ -47,18 +47,18 @@ summarize_ridership <- function(ridership_data, threshold) {
   .frequency_thresholds <- total_trip_frequency %>%
     pull(Total_Trips_Served) %>%
     #calculate the 25rd and 75th percentiles, ignoring any NA values
-    quantile(c(0.25, 0.75), na.rm = TRUE)
+    quantile(c(0.50, 0.75), na.rm = TRUE)
   
-  .p25_threshold <- round(.frequency_thresholds["25%"]) #25th percentile cutoff
+  .p50_threshold <- round(.frequency_thresholds["50%"]) #50th percentile cutoff
   .p75_threshold <- round(.frequency_thresholds["75%"]) #75th percentile cutoff
   
   frequency_categorized <- total_trip_frequency %>%
     mutate(Frequency_Category = case_when(
         #High Frequency (Trips_Served is greater than or equal to the 75p)
         Total_Trips_Served >= .p75_threshold ~ "High Frequency (Peak Core)",
-        #Medium Frequency (Trips_Served is greater than or equal to the 25p, but less than p75)
-        Total_Trips_Served >= .p25_threshold ~ "Medium Frequency (Base Core)",
-        #Low Frequency (everything else, which is below the 25p)
+        #Medium Frequency (Trips_Served is greater than or equal to the 50p, but less than p75)
+        Total_Trips_Served >= .p50_threshold ~ "Medium Frequency (Base Core)",
+        #Low Frequency (everything else, which is below the 50p)
         TRUE ~ "Low Frequency (Tail/Coverage)"))
   
   #combine average ridership and trip frequency
@@ -70,28 +70,25 @@ summarize_ridership <- function(ridership_data, threshold) {
   return(frequency_ridership_combined)
 }
 
-
-#' Identify common incident
+#' Incident Occurences
 #' 
-#' @description This function identifies the most common incident for each
-#' route-stop combination. 
+#' @description This function summarizes how many times eacg incident occurs for
+#' each route-stop combination. 
 #' 
 #' @param otp_data data frame. your cleaned otp data
 #' 
-#' @return a data frame of the average number of riders for each route-stop combo
+#' @return a data frame of the incident occurence counts for each route-stop combo
 
 summarize_otp <- function(otp_data){
-#identify most common incident
-  common_incident <- otp_data %>%
+#calculate summary of incident occurences
+incidents_count <- otp_data %>%
     group_by(Route, Stop.Number, Incident) %>%
     #count the number of occurences for each incident
-    summarize(occurences = n()) %>%
-    ungroup() %>%
-    group_by(Route, Stop.Number) %>%
-    #identify which incident occurs most often
-    slice_max(order_by = occurences, n = 1, with_ties = FALSE) %>%
-    rename(Common_Incident = Incident) %>%
-    select(-c("occurences"))
-  
-  return(common_incident)
+    summarize(Occurences = n(), .groups = 'drop') %>%
+  group_by(Route, Stop.Number) %>%
+  pivot_wider(names_from = Incident, values_from = Occurences, values_fill = 0) %>%
+  ungroup()
+
+  return(incidents_count)
 }
+
