@@ -13,9 +13,9 @@ source("/Users/zoeybug/Documents/GitHub/1650_final_project/scripts/analysis.R")
 #PROCESSING
 #run processing function and pull data frames
 processed_data <- clean_and_process(
-  "/Users/zoeybug/Documents/GitHub/1650_final_project/test/demo data/ridership_simulated.csv",
-  "/Users/zoeybug/Documents/GitHub/1650_final_project/test/demo data/otp_simulated.csv",
-  "/Users/zoeybug/Documents/GitHub/1650_final_project/test/demo data/stop.csv")
+  "/Users/zoeybug/Documents/GitHub/1650_final_project/demo/demo data/ridership_simulated.csv",
+  "/Users/zoeybug/Documents/GitHub/1650_final_project/demo/demo data/otp_simulated.csv",
+  "/Users/zoeybug/Documents/GitHub/1650_final_project/demo/demo data/stop.csv")
 
 ridership_data <- processed_data$ridership
 otp_data <- processed_data$otp
@@ -77,7 +77,47 @@ print("Late Incident LM Model Results")
 print(lm_incident_frequency$Late)
 sink()
 
-#now go to/copy code from plotting.R file. in this case, i will copy the code
+#pull and save stop specific data from above analysis
+#incident related dated
+#set thresholds for volatility related to incident
+.late_threshold <- 200
+.early_threshold <- 200
+
+#filter by stops above thresholds for incident count
+volatile_stops_data <- otp_ridership_joined %>%
+  filter(Late > .late_threshold, Early > .early_threshold)
+
+#pull volatile stop numbers
+volatile_stops <- unique(volatile_stops_data$Stop.Number)
+volatile_stops <- as.data.frame(volatile_stops)
+
+#save volatile incident stop numbers
+sink("demo results/volatile_stops_list.txt")
+print("These are the stops with scheduling volatility that should be reviewed.")
+print(volatile_stops)
+sink()
+
+#trip frequency/service related data
+#set threshold for underserved related to ridership
+ridership_threshold <- 16 
+
+#filter by stops within low frequency and above ridership threshold
+under_served_stops <- otp_ridership_joined %>%
+  filter(Frequency_Category == "Low Frequency (Tail/Coverage)", 
+         avg_riders_per_day > ridership_threshold)
+
+#pull underserved stop numbers
+under_served_stops <- under_served_stops_data %>%
+  distinct(Stop.Number)
+under_served_stops <- as.data.frame(under_served_stops)
+
+#save underserved stop numbers
+sink("demo results/underserved_stops_list.txt")
+print("These are the stops with high ridership and low trip frequency; they may potentially be underserved and should thus be reviewed.")
+print(under_served_stops)
+sink()
+
+#run plotting code
 #average ridership by stop frequency
 frequency_plot <- ggplot(otp_ridership_joined, 
                          aes(x = Frequency_Category, y = avg_riders_per_day)) +

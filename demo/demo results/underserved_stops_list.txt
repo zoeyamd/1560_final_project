@@ -1,0 +1,20 @@
+[1] "These are the stops with high ridership and low trip frequency; they may potentially be underserved and should thus be reviewed."
+# A tibble: 16 × 1
+   Stop.Number
+         <int>
+ 1       59015
+ 2       57535
+ 3       15880
+ 4       16385
+ 5       73600
+ 6       16720
+ 7       72405
+ 8       60001
+ 9       18721
+10       16035
+11       23080
+12        7395
+13         130
+14       15575
+15         435
+16       59915
