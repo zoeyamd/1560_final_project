@@ -4,7 +4,7 @@
 # This code runs all functions and analyses of inputted data.                 #
 #*****************************************************************************#
 
-#LOAD DEPENDENCIES AND FUNCTIONS
+#load dependences and functions
 library(tidyverse)
 library(broom)
 library(knitr)

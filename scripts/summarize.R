@@ -16,7 +16,7 @@
 #' route-stop combo
 
 summarize_ridership <- function(ridership_data, threshold) {
-  #calculate average number of riders per day
+  #calculate total ridership for each route-stop combo
   total_riders <- ridership_data %>%
     group_by(Route, Stop.Number) %>%
     summarize(total_riders = sum(Ride.Count), .groups = 'drop')
@@ -46,7 +46,7 @@ summarize_ridership <- function(ridership_data, threshold) {
   #cateogrize trip frequency
   .frequency_thresholds <- total_trip_frequency %>%
     pull(Total_Trips_Served) %>%
-    #calculate the 25rd and 75th percentiles, ignoring any NA values
+    #calculate the 50th and 75th percentiles, ignoring any NA values
     quantile(c(0.50, 0.75), na.rm = TRUE)
   
   .p50_threshold <- round(.frequency_thresholds["50%"]) #50th percentile cutoff
