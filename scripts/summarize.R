@@ -16,7 +16,7 @@
 #' route-stop combo
 
 summarize_ridership <- function(ridership_data, threshold) {
-  #calculate average number of riders per day
+  #calculate total ridership for each route-stop combo
   total_riders <- ridership_data %>%
     group_by(Route, Stop.Number) %>%
     summarize(total_riders = sum(Ride.Count), .groups = 'drop')
